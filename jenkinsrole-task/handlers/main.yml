@@ -1,0 +1,5 @@
+    - name: Jenkins restart
+      service: 
+        name: jenkins
+        state: restarted
+# handlers file for jenkinsrole-task

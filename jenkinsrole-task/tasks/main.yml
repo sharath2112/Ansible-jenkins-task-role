@@ -1,0 +1,28 @@
+    - name: Install packages and dependencies
+      apt:
+        name: openjdk-8-jdk
+        update_cache: yes
+        state: present
+
+    - name: Add the Jenkins public GPG key to the apt repo
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+        state: present
+
+    - name: Add Jenkins apt repo to the trusted sources list
+      apt_repository:
+        repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+        state: present
+
+    - name: Install Jenkins server
+      apt:
+        name: jenkins
+        update_cache: yes
+        state: present
+    - name: Ensure SELinux is set to enforcing mode
+      lineinfile:
+        path: /etc/default/jenkins
+        regexp: 'HTTP_PORT='
+        line: "HTTP_PORT={{ ports }}"
+      notify: 
+        - Jenkins restart
